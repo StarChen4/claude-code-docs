@@ -1,0 +1,204 @@
+# ClaudeCode 使用教程
+
+ClaudeCode CLI、VSCode 和 JetBrains 插件的完整使用指南。
+
+## 项目简介
+
+本项目提供 ClaudeCode 的全面使用教程，涵盖从基础到进阶的所有内容，适用于内网环境部署。
+
+## 特性
+
+- 📚 **完整文档**：从安装到进阶使用的完整教程
+- 🌐 **内网部署**：可在无互联网环境下运行
+- 🎨 **美观界面**：基于 VitePress 的现代化文档网站
+- 🔍 **本地搜索**：支持中文全文搜索
+- 📱 **响应式设计**：支持各种设备访问
+
+## 技术栈
+
+- [VitePress](https://vitepress.dev/) - 静态网站生成器
+- [Vue 3](https://vuejs.org/) - 前端框架
+- [Vite](https://vitejs.dev/) - 构建工具
+
+## 快速开始
+
+### 环境要求
+
+- Node.js >= 18.0.0
+- npm 或 yarn
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发模式
+
+启动本地开发服务器：
+
+```bash
+npm run docs:dev
+```
+
+访问 http://localhost:5173 查看文档。
+
+### 构建生产版本
+
+```bash
+npm run docs:build
+```
+
+构建后的文件在 `docs/.vitepress/dist/` 目录。
+
+### 预览生产版本
+
+```bash
+npm run docs:preview
+```
+
+## 文档结构
+
+```
+docs/
+├── .vitepress/          # VitePress 配置
+│   └── config.js        # 主配置文件
+├── index.md             # 首页
+├── guide/               # 基础教程
+│   ├── installation.md
+│   ├── introduction.md
+│   ├── modes.md
+│   └── basic-commands.md
+├── advanced/            # 进阶教程
+│   ├── memory.md
+│   ├── cli-operations.md
+│   ├── permissions.md
+│   ├── custom-commands.md
+│   ├── subagent.md
+│   ├── resume.md
+│   ├── git-integration.md
+│   └── requirement-driven.md
+└── reference/           # 参考文档
+    ├── commands.md
+    ├── faq.md
+    └── troubleshooting.md
+```
+
+## 内网部署
+
+### 1. 构建静态文件
+
+```bash
+npm run docs:build
+```
+
+### 2. 部署到服务器
+
+将 `docs/.vitepress/dist/` 目录中的文件复制到 Linux 服务器：
+
+```bash
+# 在服务器上
+mkdir -p /var/www/claude-docs
+# 上传文件到此目录
+```
+
+### 3. 配置 Nginx
+
+创建 Nginx 配置文件 `/etc/nginx/sites-available/claude-docs`：
+
+```nginx
+server {
+    listen 80;
+    server_name claude.com;  # 修改为你的域名
+
+    root /var/www/claude-docs;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 启用 gzip 压缩
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+}
+```
+
+启用站点：
+
+```bash
+sudo ln -s /etc/nginx/sites-available/claude-docs /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+### 4. 配置域名解析
+
+在内网 DNS 服务器或客户端 hosts 文件中添加：
+
+```
+<服务器IP>  claude.com
+```
+
+Windows hosts 文件位置：`C:\Windows\System32\drivers\etc\hosts`
+
+## 内容贡献
+
+### 添加新文档
+
+1. 在相应目录下创建 `.md` 文件
+2. 在 `docs/.vitepress/config.js` 中添加导航和侧边栏配置
+3. 使用 Markdown 编写内容
+
+### 文档格式
+
+文档使用标准 Markdown 格式，支持 VitePress 扩展语法：
+
+```markdown
+::: tip 提示
+这是一个提示框
+:::
+
+::: warning 警告
+这是一个警告框
+:::
+
+::: danger 危险
+这是一个危险警告框
+:::
+```
+
+## 维护
+
+### 更新文档
+
+1. 编辑对应的 `.md` 文件
+2. 本地预览确认
+3. 重新构建并部署
+
+### 备份
+
+建议定期备份以下内容：
+
+- 源代码（整个 `docs/` 目录）
+- 配置文件
+- 自定义主题（如有）
+
+## 许可证
+
+MIT License
+
+## 联系方式
+
+- 项目维护：[内网管理员]
+- 问题反馈：[内网 Issue 系统]
+
+## 更新日志
+
+### v1.0.0 (2025-01-11)
+
+- 初始版本发布
+- 完整的基础教程
+- 完整的进阶教程
+- 完整的参考文档
+- 支持内网部署
