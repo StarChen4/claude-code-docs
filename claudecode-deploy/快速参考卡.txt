@@ -1,0 +1,105 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃           ClaudeCode 文档部署快速参考卡              ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+【服务器部署 - 3步完成】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ 拷贝文件
+   cp -r /mnt/usb/claudecode-deploy ~/
+   cd ~/claudecode-deploy
+
+2️⃣ 移动 zip
+   sudo mv claude-docs.zip /tmp/
+
+3️⃣ 一键部署
+   sudo bash deploy.sh
+
+   ✓ 完成！ 网站已启动
+
+【客户端配置 - 2步完成】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ 修改脚本
+   编辑 configure-client.bat 第13行
+   改为实际服务器 IP
+
+2️⃣ 运行脚本
+   以管理员身份运行
+
+   ✓ 浏览器访问：http://claudecode.com
+
+【日常更新 - 2步完成】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ 拷贝新版本
+   cp /mnt/usb/claude-docs.zip /tmp/
+
+2️⃣ 一键更新
+   sudo bash update.sh
+
+   ✓ 完成！（自动备份+更新）
+
+【常用命令】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 查看服务状态
+sudo systemctl status nginx
+
+# 查看错误日志
+sudo tail -f /var/log/nginx/claude-docs-error.log
+
+# 查看部署文件
+ls -la /var/www/claude-docs/
+
+# 重启 Nginx
+sudo systemctl restart nginx
+
+# 回滚到备份
+sudo rm -rf /var/www/claude-docs
+sudo cp -r /var/www/claude-docs.backup.YYYYMMDD /var/www/claude-docs
+sudo nginx -s reload
+
+【故障速查】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+问题：无法访问网站
+解决：
+  1. ping <服务器IP>
+  2. sudo systemctl status nginx
+  3. 检查 hosts 文件
+
+问题：403 Forbidden
+解决：
+  sudo chown -R nginx:nginx /var/www/claude-docs
+  sudo chmod -R 755 /var/www/claude-docs
+
+问题：更新后看不到变化
+解决：
+  浏览器按 Ctrl + F5 强制刷新
+
+【环境要求】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+服务器：
+  ✅ Nginx
+  ✅ unzip
+  ✅ bash
+  ❌ 不需要 Node.js/npm/Git
+
+客户端：
+  ✅ Windows
+  ✅ 管理员权限
+  ✅ 浏览器
+
+【重要提醒】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  部署前先测试环境
+⚠️  更新前会自动备份
+⚠️  客户端需配置 hosts
+⚠️  更新后强制刷新浏览器
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+详细文档：OFFLINE-DEPLOYMENT.md
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

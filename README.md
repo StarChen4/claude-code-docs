@@ -86,61 +86,65 @@ docs/
 
 ## 内网部署
 
-### 1. 构建静态文件
+完整的部署文档请参考：**[DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+### 快速部署流程
+
+#### 1. Windows 上构建
 
 ```bash
+# 构建生产版本
 npm run docs:build
+
+# 打包文件
+Compress-Archive -Path "docs\.vitepress\dist\*" -DestinationPath "claude-docs.zip"
 ```
 
-### 2. 部署到服务器
-
-将 `docs/.vitepress/dist/` 目录中的文件复制到 Linux 服务器：
+#### 2. 上传到服务器
 
 ```bash
-# 在服务器上
-mkdir -p /var/www/claude-docs
-# 上传文件到此目录
+# 使用 scp 上传（或使用 WinSCP）
+scp claude-docs.zip user@服务器IP:/tmp/
 ```
 
-### 3. 配置 Nginx
+#### 3. 服务器上部署
 
-创建 Nginx 配置文件 `/etc/nginx/sites-available/claude-docs`：
-
-```nginx
-server {
-    listen 80;
-    server_name claude.com;  # 修改为你的域名
-
-    root /var/www/claude-docs;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # 启用 gzip 压缩
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-}
-```
-
-启用站点：
+**方法一：使用自动部署脚本（推荐）**
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/claude-docs /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
+# SSH 登录服务器
+ssh user@服务器IP
+
+# 上传部署脚本
+# 将 deploy.sh 上传到服务器
+
+# 执行部署
+sudo bash deploy.sh
 ```
 
-### 4. 配置域名解析
+**方法二：手动部署**
 
-在内网 DNS 服务器或客户端 hosts 文件中添加：
+参考完整文档 [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+#### 4. 配置域名
+
+在客户端 hosts 文件中添加：
 
 ```
 <服务器IP>  claude.com
 ```
 
 Windows hosts 文件位置：`C:\Windows\System32\drivers\etc\hosts`
+
+#### 5. 访问网站
+
+浏览器访问：`http://claude.com`
+
+### 部署文件说明
+
+- **DEPLOYMENT.md** - 完整的部署文档，包括详细步骤和故障排查
+- **deploy.sh** - Linux 服务器自动部署脚本
+- **docs/.vitepress/dist/** - 构建后的静态文件目录
 
 ## 内容贡献
 

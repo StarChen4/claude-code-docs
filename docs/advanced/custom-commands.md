@@ -130,11 +130,10 @@ ClaudeCode 会读取 `review.md` 的内容并执行。
 1. 查看 `git status` 和 `git diff`
 2. 根据更改内容生成规范的提交信息
 3. 提交信息格式：
-   ```
+
    <type>: <subject>
 
    <body>
-   ```
 
    type 可以是：
    - feat: 新功能
