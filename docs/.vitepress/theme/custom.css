@@ -1,0 +1,48 @@
+/* 自定义样式 */
+
+/* 调整主色调 */
+:root {
+  --vp-c-brand-1: #3b82f6;
+  --vp-c-brand-2: #2563eb;
+  --vp-c-brand-3: #1d4ed8;
+}
+
+/* 调整字体 */
+:root {
+  --vp-font-family-base: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+/* 调整代码块样式 */
+.vp-doc div[class*='language-'] {
+  border-radius: 8px;
+}
+
+/* 调整标题间距 */
+.vp-doc h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* 调整首页特性卡片 */
+.VPFeature {
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.VPFeature:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* 自定义提示框样式 */
+.custom-block.tip {
+  border-left-color: #3b82f6;
+}
+
+.custom-block.warning {
+  border-left-color: #f59e0b;
+}
+
+.custom-block.danger {
+  border-left-color: #ef4444;
+}
